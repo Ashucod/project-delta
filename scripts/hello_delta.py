@@ -13,8 +13,6 @@ print("=" * 50)
 # This is Day 2 of the git and github training. We will practice basic git commands and build muscle mermory for it.
 import os
 
-import os
-
 print("=== SYSTEM DIAGNOSTICS ===")
 print(f"Working Directory : {os.getcwd()}")
 print(f"OS Type           : {os.name}")
