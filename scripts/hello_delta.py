@@ -21,5 +21,3 @@ def run_diagnostics():
     print("==========================")
 
 run_diagnostics()
-
-print("Hello, World")
