@@ -19,5 +19,7 @@ def run_diagnostics():
     print(f"Logged in as      : {os.getlogin()}")
     print(f"PATH              : {os.environ.get('PATH')}")
     print("==========================")
-    
+
 run_diagnostics()
+
+print("Hello, World")
