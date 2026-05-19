@@ -11,3 +11,6 @@ print(" Objective: HFT Bot. No shortcuts. No excuses.")
 print("=" * 50)
 
 # This is Day 2 of the git and github training. We will practice basic git commands and build muscle mermory for it.
+import os
+
+print(os.getcwd())  # Print the current working directory
