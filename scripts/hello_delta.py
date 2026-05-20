@@ -21,3 +21,4 @@ def run_diagnostics():
     print("==========================")
 
 run_diagnostics()
+print("Hello, Delta Team! Let's crush it this season!")
