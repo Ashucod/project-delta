@@ -198,3 +198,21 @@ Rule: always activate your venv before running pip install anything. The termina
 
 The Mental Model in One Paragraph
 yfinance is a thin wrapper around Yahoo Finance's unofficial API. It is not a real-time feed — there is a 15-minute delay on most data during market hours. It is not a production-grade data source — serious HFT firms use Bloomberg Terminal or proprietary feeds. For Project Delta at this stage, it is exactly the right tool: free, accessible, and rich enough to build real signal logic. The skills you develop using it — API calls, data parsing, error handling, time-series manipulation — transfer directly to professional-grade data sources later.
+
+
+===============================================================================================================================================
+
+The Breakdown: except Exception as e:
+You can read this line in three distinct pieces:
+
+1. except (The Net)
+This is the trigger. It tells Python: "If any line of code inside the try block above suddenly crashes, do not stop the program. Drop down here and run this code instead."
+
+2. Exception (The Catch-All)
+In Python, there are dozens of specific error types. You have KeyError (trying to find a dictionary label that doesn't exist), ConnectionError (your Wi-Fi dropped), and ValueError (expecting a number but getting text).
+
+By typing Exception (with a capital E), you are referencing the master category of errors. You are telling Python to catch absolutely everything. Whether it's a network glitch or bad math, this net will catch it.
+
+3. as e (The Black Box Recorder)
+This is the genius part of the line. When Python catches an error, it generates a highly detailed crash report explaining exactly what went wrong.
+as e takes that entire crash report and packages it into a temporary variable named e. (You could type as crash_report or as error_message, but e is the industry standard abbreviation).
