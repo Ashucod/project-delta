@@ -1,5 +1,7 @@
 # Project Delta - V2 Multi-Ticker Scanner
 import yfinance as yf
+import time
+import os
 
 def scan_market():
     # 1. The Target List
@@ -35,4 +37,20 @@ def scan_market():
 
 # The Main Gatekeeper
 if __name__ == "__main__":
-    scan_market()
+    # The Infinite Heartbeat Loop
+    while True:
+        try:
+            # 1. Clear the terminal screen (works on Windows/Mac/Linux)
+            os.system('cls' if os.name == 'nt' else 'clear')
+            
+            # 2. Run the scanner
+            scan_market()
+            
+            # 3. Apply the brakes
+            print("Dashboard live. Next update in 10 seconds... (Press CTRL+C to quit)")
+            time.sleep(10)
+            
+        except KeyboardInterrupt:
+            # This catches you pressing CTRL+C and shuts down the bot cleanly
+            print("\nShutting down Project Delta scanner. Goodbye.")
+            break
