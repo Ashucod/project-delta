@@ -80,6 +80,21 @@ strong_days = df[(df["Close"] > df["SMA_20"]) & (df["Volume"] > 80_000_000)]
 # print(f"Strong Days : {len(strong_days)}")
 # print(strong_days[["Close", "SMA_20", "Volume"]])
 # ------------------------------------------------------------------------------------------------------------------------------------------
+# Classy each day's return as UP, DOWN or FLAT
+def classify_day(return_val):
+    if pd.isna(return_val):
+        return "N/A"
+    elif return_val > 0.01:
+        return "STRONG UP"
+    elif return_val > 0:
+        return "UP"
+    elif return_val < -0.01:
+        return "STRONG DOWN"
+    else:
+        return "DOWN"
+    
+df["Signal"] = df["Daily_Return"].apply(classify_day)
+print(df[["Close", "Daily_Return", "Signal"]].tail(8))
 # ------------------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------------------------

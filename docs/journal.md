@@ -216,3 +216,60 @@ By typing Exception (with a capital E), you are referencing the master category 
 3. as e (The Black Box Recorder)
 This is the genius part of the line. When Python catches an error, it generates a highly detailed crash report explaining exactly what went wrong.
 as e takes that entire crash report and packages it into a temporary variable named e. (You could type as crash_report or as error_message, but e is the industry standard abbreviation).
+
+
+_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_
+
+import yfinance as yf
+import pandas as pd
+
+# ── Fetch ────────────────────────────────────────────────
+df = yf.Ticker("AAPL").history(period="6mo")
+df = df.drop(columns=["Dividends", "Stock Splits"])
+
+# ── Engineer Features ────────────────────────────────────
+df["Daily_Return"]  = df["Close"].pct_change()
+df["SMA_20"]        = df["Close"].rolling(20).mean()
+df["SMA_50"]        = df["Close"].rolling(50).mean()
+df["Volatility_20"] = df["Daily_Return"].rolling(20).std()
+
+# ── Clean ────────────────────────────────────────────────
+df = df.dropna(subset=["SMA_50"])
+
+# ── Signal ───────────────────────────────────────────────
+latest           = df.iloc[-1]
+sma_signal       = "BULLISH" if latest["SMA_20"] > latest["SMA_50"] else "BEARISH"
+high_volume_flag = latest["Volume"] > df["Volume"].mean() * 1.5
+
+# ── Output ───────────────────────────────────────────────
+print(f"\n{'='*40}")
+print(f"  AAPL DAILY BRIEF")
+print(f"{'='*40}")
+print(f"  Close      : ${latest['Close']:.2f}")
+print(f"  SMA 20     : ${latest['SMA_20']:.2f}")
+print(f"  SMA 50     : ${latest['SMA_50']:.2f}")
+print(f"  Signal     : {sma_signal}")
+print(f"  High Vol   : {'YES ⚠' if high_volume_flag else 'No'}")
+print(f"  Volatility : {latest['Volatility_20']*100:.2f}%")
+print(f"{'='*40}\n")
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+                    Cheat Sheet — Quick Reference
+────────────────────────────────────────────────────────────────────────────────
+Function                            What it does
+────────────────────────────────────────────────────────────────────────────────
+df.head(n) / df.tail(n)             First or last n rows
+df["Close"]                         Select one column as a Series
+df[["Open", "Close"]]               Select multiple columns as DataFrame
+df.iloc[-1]                         Last row by position
+df.pct_change()                     Row-by-row percentage change
+df.rolling(n).mean()                n-period moving average
+df.rolling(n).std()                 n-period rolling standard deviation
+df[df["Close"] > 180]               Filter rows by condition
+df.describe()                       Full statistical summary
+df.apply(fn)                        Run custom function on every row
+df.isna().sum()                     Count missing values per column
+df.dropna()                         Remove rows with any NaN
+df.sort_values("col")               Sort rows by column value
+
+The sequence you will follow on every new script: fetch → inspect → engineer → clean → signal → output. The ten functions above cover every step.
