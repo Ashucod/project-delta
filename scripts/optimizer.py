@@ -26,11 +26,17 @@ def fast_backtest(df, starting_capital):
     else:
         portfolio_value = cash
 
-    return portfoilio_value - starting_capital
+    return portfolio_value - starting_capital
 
 
 if __name__ == "__main__":
     print(("--- STARTING BRUTE-FORCE OPTIMIZATION (AAPL 1Y) ---\n"))
+
+    print("Downloading historical data...")
+
+    raw_data = yf.Ticker("AAPL").history(period="1y")
+
+    print("Data acquired. Initiating nested loop sequence...\n")
 
     best_profit = -999999
     best_fast = 0
@@ -47,7 +53,7 @@ if __name__ == "__main__":
             
             # Run the strategy and the backtest
             df_signals = generate_signals(df_copy, fast_window=fast, slow_window=slow)
-            profit = fast_backtest(df_signals)
+            profit = fast_backtest(df_signals, 10000.0)
             
             # If this combination beat our previous high score, save it!
             if profit > best_profit:
